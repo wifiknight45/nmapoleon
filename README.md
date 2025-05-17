@@ -1,5 +1,5 @@
 # nmapoleon 
-is an Interactice Network Topology Mapper that visualizes network augmentation 
+is an Interactive Network Topology Mapper that visualizes network augmentation 
 
 Version 1 (v1) updates:
 Real-Time Graph Updates: The script continuously scans the network and refreshes the topology.
