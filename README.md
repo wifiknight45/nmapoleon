@@ -48,7 +48,7 @@ Before running Nmapoleon, ensure you have the following installed:
     * If your network devices use a different community string, modify the `COMMUNITY_STRING` variable in the script.
     * Ensure that SNMP is enabled on the network devices you want to monitor and that they allow SNMP queries from the machine running the script.
 3.  **Network Subnet:**
-    * The default subnet to scan is `192.168.1.0/24`.
+    * The default subnet to scan is `192.168.1.0/01`.
     * You can change the `subnet` parameter in the `scan_network()` function call within the main loop if you need to monitor a different network segment.
 4.  **Critical Devices:**
     * The `detect_anomalies()` function uses a dictionary `critical_devices` to define known and trusted devices.
@@ -79,19 +79,8 @@ Before running Nmapoleon, ensure you have the following installed:
 
 To stop the continuous monitoring, press `Ctrl + C` in the terminal where the script is running.
 
-## Potential Enhancements
+This script provides a basic framework for network topology discovery and anomaly detection.
 
-This script provides a basic framework for network topology discovery and anomaly detection. Here are some potential enhancements that could be added in future versions:
-
-* **Link Discovery:** Implement methods (e.g., using LLDP or CDP via SNMP) to discover network links and represent them as edges in the topology graph.
-* **More Detailed Device Information:** Retrieve more comprehensive information about each device using SNMP (e.g., interface details, MAC addresses, operating system).
-* **User Interface:** Develop a graphical user interface (GUI) for easier interaction and visualization.
-* **Configuration File:** Use a configuration file (e.g., INI, YAML) to store settings like the target subnet, SNMP community string, critical devices, and scanning interval.
-* **Advanced Anomaly Detection:** Implement more sophisticated anomaly detection techniques, such as tracking changes in the network topology over time or identifying unusual traffic patterns.
-* **Reporting and Logging:** Generate detailed reports of network topology changes and detected anomalies, and implement more robust logging.
-* **Alerting Mechanisms:** Integrate with notification systems (e.g., email, Slack) to send alerts when anomalies are detected.
-* **Interactive Topology Map:** Make the generated topology map interactive, allowing users to zoom, pan, and view device details.
-* **Multi-threading/Asynchronous Operations:** Improve performance by using threads or asynchronous operations for network scanning and SNMP queries.
 
 ## Disclaimer
 
@@ -99,4 +88,5 @@ This script is provided as-is for educational and informational purposes. Networ
 
 Acknowledgements: Alphabet ~ Google Colab ~ Gemini AI ~ Microsoft Copilot
 This is licensed under the M.I.T. License 2.0
++ powered by excellent playlists +  copious quantities of caffeine & nicotine. 
 
