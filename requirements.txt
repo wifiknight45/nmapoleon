@@ -1,0 +1,8 @@
+# Network topology graph creation and management
+networkx>=3.0
+
+# Network topology visualization and diagram generation
+matplotlib>=3.5.0
+
+# SNMP protocol implementation for device information queries
+pysnmp>=4.4.12
