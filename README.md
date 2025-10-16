@@ -1,3 +1,9 @@
+
+![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Network Monitoring](https://img.shields.io/badge/tool-network%20monitoring-blueviolet.svg)
+![Nmap](https://img.shields.io/badge/requires-nmap-red.svg)
+
 # nmapoleon 
 an Interactive Network Topology Mapper that visualizes network augmentation 
 
