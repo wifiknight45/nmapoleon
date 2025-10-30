@@ -232,5 +232,5 @@ wifiknight45@proton.me
 
 This script is provided as-is for educational and informational purposes. Network scanning and SNMP queries can generate network traffic and might be intrusive in some environments. Ensure you have the necessary permissions before running this script on a network. The anomaly detection is based on a simple list of critical devices and may not catch all types of network anomalies.
 
- ## this script was powered by excellent playlists + copious quantities of caffeine & nicotine for the purposes of teaching and learning python programming language  
+ this script was powered by excellent playlists + copious quantities of caffeine & nicotine for the purposes of teaching and learning python programming language  
 
