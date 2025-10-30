@@ -4,81 +4,233 @@
 ![Network Monitoring](https://img.shields.io/badge/tool-network%20monitoring-blueviolet.svg)
 ![Nmap](https://img.shields.io/badge/requires-nmap-red.svg)
 
-# nmapoleon 
-an Interactive Network Topology Mapper that visualizes network augmentation 
+# nmapoleon
 
-
-## Overview
-
-**Nmapoleon** is a Python script designed to automatically discover devices on a network, visualize the network topology, and identify potential anomalies by detecting unknown devices. It leverages the power of `nmap` for network scanning and SNMP to gather basic device information. The script continuously monitors the network, updates the topology, and saves the current state.
+A Python-based network topology scanner and monitoring tool designed for cybersecurity research and network administration. nmapoleon combines Nmap scanning with SNMP queries to discover, map, and monitor network devices in real-time.
 
 ## Features
 
-* **Network Discovery:** Uses `nmap` to scan a specified subnet and identify active hosts.
-* **Device Information Retrieval:** Attempts to retrieve basic device information (like system description) using SNMP.
-* **Dynamic Topology Visualization:** Creates a graphical representation of the network topology using `networkx` and `matplotlib`, saving the image as `network_topology.png` and displaying it.
-* **Anomaly Detection:** Flags devices that are present on the network but not listed in a predefined set of critical devices.
-* **Topology Persistence:** Saves the list of discovered devices to a `network_topology.json` file.
-* **Continuous Monitoring:** Runs in a loop, periodically scanning the network, updating the topology, and checking for anomalies.
+- **Automated Network Discovery**: Scans specified subnets using Nmap to identify active hosts
+- **SNMP Device Profiling**: Queries discovered devices for detailed information using SNMP
+- **Visual Topology Mapping**: Generates network topology diagrams showing device relationships
+- **Anomaly Detection**: Identifies unknown or rogue devices not in the approved device list
+- **Continuous Monitoring**: Supports periodic scanning at configurable intervals
+- **Data Export**: Saves topology data in JSON format for further analysis
+- **Concurrent Scanning**: Multi-threaded SNMP queries for faster network profiling
 
 ## Prerequisites
 
-Before running Nmapoleon, ensure you have the following installed:
+### System Requirements
+- Debian-based Linux distribution (Debian, Ubuntu, Kali, etc.)
+- Python 3.7 or higher
+- Nmap installed and accessible in PATH
 
-* **Python 3:** The script is written in Python 3.
-* **Required Python Libraries:** Install the necessary libraries using pip:
-    ```bash
-    pip install networkx matplotlib pysnmp
-    ```
-* **Nmap:** The `nmap` command-line tool must be installed and accessible in your system's PATH. You can usually install it using your operating system's package manager (e.g., `sudo apt-get install nmap` on Debian/Ubuntu, `brew install nmap` on macOS, or by downloading it from the official Nmap website for Windows).
+### Install System Dependencies
 
-## Setup and Configuration
+```bash
+# Update package lists
+sudo apt update
 
-1.  **Download the Script:** Save the provided Python code as `nmapoleon.py`.
-2.  **SNMP Configuration:**
-    * The script currently uses the default public community string (`public`) and SNMP port (`161`).
-    * If your network devices use a different community string, modify the `COMMUNITY_STRING` variable in the script.
-    * Ensure that SNMP is enabled on the network devices you want to monitor and that they allow SNMP queries from the machine running the script.
-3.  **Network Subnet:**
-    * The default subnet to scan is `192.168.1.0/01`.
-    * You can change the `subnet` parameter in the `scan_network()` function call within the main loop if you need to monitor a different network segment.
-4.  **Critical Devices:**
-    * The `detect_anomalies()` function uses a dictionary `critical_devices` to define known and trusted devices.
-    * Modify this dictionary to include the IP addresses and (optional) names of the essential devices on your network (e.g., routers, servers). This helps the script identify any other devices as potential anomalies.
+# Install Nmap
+sudo apt install nmap -y
 
-## Running Nmapoleon
+# Install Python3 and venv (if not already installed)
+sudo apt install python3 python3-venv python3-pip -y
+```
 
-1.  **Open a terminal or command prompt.**
-2.  **Navigate to the directory where you saved `nmapoleon.py`.**
-3.  **Run the script using the Python interpreter:**
-    ```bash
-    python nmapoleon.py
-    ```
-4.  The script will start scanning the network, display the network topology, and print any detected anomalies in the console. It will continue to run and update periodically (every 30 seconds by default).
-5.  A `network_topology.png` file will be created in the same directory, containing the visual representation of the network topology.
-6.  The list of discovered devices will also be saved in `network_topology.json`.
+## Installation
 
-## Understanding the Output
+1. **Clone the repository**
+```bash
+git clone https://github.com/wifiknight45/nmapoleon.git
 
-* **Console Output:**
-    * Displays information about the network scan process.
-    * Prints alerts for any devices found on the network that are not listed in the `critical_devices` dictionary.
-    * Shows error messages if the network scan or SNMP queries fail.
-* **`network_topology.png`:** A graphical image showing the discovered devices as nodes and their connections (although explicit connections between devices are not determined in this version, it provides a visual inventory). The labels on the nodes are the SNMP system descriptions, if available, or "Unknown Device" otherwise.
-* **`network_topology.json`:** A JSON file containing a list of the IP addresses of all the devices currently present on the network according to the latest scan.
+cd nmapoleon
+```
 
-## Stopping the Script
+2. **Create a virtual environment**
+```bash
+python3 -m venv venv
+```
 
-To stop the continuous monitoring, press `Ctrl + C` in the terminal where the script is running.
+3. **Activate the virtual environment**
+```bash
+source venv/bin/activate
+```
 
-This script provides a basic framework for network topology discovery and anomaly detection.
+4. **Install Python dependencies (manually)**
+```bash
+pip install --upgrade pip
+pip install networkx matplotlib pysnmp
+```
 
+OR for an easier install method simply install the  `requirements.txt` file provided:
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+### Basic Scan 
+Run a single scan of the default subnet (192.168.1.0/12):
+```bash
+python3 net_topo_mapper.py --iterations 1
+```
+
+### Custom Subnet Scan
+Scan a different subnet:
+```bash
+python3 net_topo_mapper.py --subnet 0.0.0.0/00 --iterations 1
+```
+
+### Continuous Monitoring
+Run continuous monitoring with 60-second intervals:
+```bash
+python3 net_topo_mapper.py --interval 60
+```
+
+### Custom SNMP Configuration
+Use a different SNMP community string and port:
+```bash
+python3 net_topo_mapper.py --community private --snmp-port 161 --iterations 1
+```
+
+### Command-Line Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--subnet` | Target subnet to scan (CIDR notation) | 192.168.1.0/24 |
+| `--community` | SNMP community string | public |
+| `--snmp-port` | SNMP port number | 161 |
+| `--interval` | Scan interval in seconds | 30 |
+| `--iterations` | Number of scan iterations (0 for continuous) | 0 |
+
+## Output
+
+The tool generates two output files:
+
+1. **network_topology.png**: Visual diagram of the network topology
+2. **network_topology.json**: JSON file containing node and edge data
+
+## Configuration
+
+Edit the `DEFAULT_CONFIG` dictionary in `net_topo_mapper.py` to customize:
+
+- Default subnet
+- SNMP community string
+- Critical devices list (for anomaly detection)
+- Scan interval
+
+Example:
+```python
+DEFAULT_CONFIG = {
+    'subnet': '192.168.1.0/24',
+    'community_string': 'public',
+    'snmp_port': 161,
+    'scan_interval': 30,
+    'critical_devices': {
+        "192.168.1.1": "Router",
+        "192.168.1.2": "Server"
+    }
+}
+```
+
+## Security Considerations
+
+**NOTE**: This tool is designed for educational purposes and authorized network security testing only. Any usage of this script confirms comprehension + receipt of this disclaimer and constitutes an agreement to this proviso.  
+
+- Only scan networks you own or have explicit permission to test
+- SNMP community strings may be transmitted in plaintext
+- Default SNMP credentials ("public") are insecure for production environments
+- Consider using SNMPv3 for encrypted authentication in production scenarios
+- Be aware of network scanning policies at your organization or institution
+
+## Future Enhancements
+
+This is an ongoing project with the following planned enhancements/improvements:
+
+### Core Functionality
+- [ ] SNMPv3 support with encrypted authentication
+- [ ] Configuration file support (YAML/JSON)
+- [ ] IPv6 subnet scanning
+- [ ] Port scanning and service detection integration
+- [ ] MAC address vendor lookup
+- [ ] Network device type classification (router, switch, AP, etc.)
+
+### Topology & Visualization
+- [ ] Interactive web-based topology viewer
+- [ ] Multiple layout algorithms (hierarchical, circular, etc.)
+- [ ] Device health status indicators (up/down, latency)
+- [ ] Historical topology comparison (diff between scans)
+- [ ] Export to multiple formats (PDF, SVG, Graphviz DOT)
+
+### Monitoring & Alerting
+- [ ] Bandwidth utilization monitoring via SNMP
+- [ ] Email/webhook notifications for anomalies
+- [ ] Device uptime tracking
+- [ ] Custom alerting rules engine
+- [ ] Integration with Syslog/SIEM systems
+
+### Database & Storage
+- [ ] SQLite/PostgreSQL backend for historical data
+- [ ] Time-series data storage for metrics
+- [ ] Query API for topology data
+- [ ] Automated backup and retention policies
+
+### Security Features
+- [ ] Vulnerability scanning integration (OpenVAS, Nessus)
+- [ ] Network baseline comparison
+- [ ] Rogue device detection with MAC OUI filtering
+- [ ] Compliance checking (unauthorized services, open ports)
+- [ ] Integration with threat intelligence feeds
+
+### Performance & Scalability
+- [ ] Distributed scanning for large networks
+- [ ] Scan result caching
+- [ ] Optimized SNMP bulk queries
+- [ ] Rate limiting and backoff strategies
+
+### User Interface
+- [ ] CLI dashboard with real-time updates
+- [ ] Web-based management interface
+- [ ] RESTful API for external integrations
+- [ ] Mobile-friendly topology viewer
+
+### Documentation
+- [ ] Detailed API documentation
+- [ ] Video tutorials and demos
+- [ ] Network topology best practices guide
+- [ ] Troubleshooting guide
+
+## Contributing
+
+Contributions are welcome; this project is being developed as part of university cybersecurity research in a sandboxed lab environment.
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/cool-feature`)
+3. Commit your changes (`git commit -am 'Add cool-feature'`)
+4. Push to the branch (`git push origin feature/nameOfexample-feature`)
+5. create a PR
+
+## License
+
+This is licensed under the M.I.T. License 2.0 see the file titled LICENSE for full details etc. 
+
+## Acknowledgments
+
+- Built with [NetworkX](https://networkx.org/) for graph operations
+- Network scanning powered by [Nmap](https://nmap.org/)
+- SNMP queries via [PySNMP](https://pysnmp.readthedocs.io/)
+
+## Contact
+
+https://github.com/wifiknight45
+wifiknight45@proton.me
+
+---
 
 ## Disclaimer
 
 This script is provided as-is for educational and informational purposes. Network scanning and SNMP queries can generate network traffic and might be intrusive in some environments. Ensure you have the necessary permissions before running this script on a network. The anomaly detection is based on a simple list of critical devices and may not catch all types of network anomalies.
 
-Acknowledgements: Alphabet ~ Google Colab ~ Gemini AI ~ Microsoft Copilot
-This is licensed under the M.I.T. License 2.0
-+ powered by excellent playlists +  copious quantities of caffeine & nicotine. 
+ ## this script was powered by excellent playlists + copious quantities of caffeine & nicotine for the purposes of teaching and learning python programming language  
 
